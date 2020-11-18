@@ -54,7 +54,7 @@ app.get("/api/timestamp/:time",(req,res)=>{
     })
    }else{
      res.json({
-       error:date
+       error:"Invalid Date"
      })
    }
    
