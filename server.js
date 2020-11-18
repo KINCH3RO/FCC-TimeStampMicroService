@@ -17,16 +17,23 @@ app.use(express.static('public'));
 app.get("/", function (req, res) {
   res.sendFile(__dirname + '/views/index.html');
 });
+app.get("/api/timestamp",(req,res)=>{
+  var date = new Date();
+  res.json({
+    unix:date.getTime(),
+    utc:date.toUTCString()
 
+  })
+})
 
 // your first API endpoint... 
-app.get("/api/hello", function (req, res) {
-  res.json({greeting: 'hello API'});
-});
-
 app.get("/api/timestamp/:time",(req,res)=>{
   let value = req.params.time;
-  if(value.split("-").length>1){
+  let regex1=/^\d{4}-\d{2}-\d{2}$/;
+  let regex2=/^\d+$/;
+  
+ 
+ if(regex1.test(value)){
     
     let splittedArray=value.split("-");
     
@@ -42,11 +49,15 @@ app.get("/api/timestamp/:time",(req,res)=>{
 
     })
 
-  }else{
+  }else if(regex2.test(value)){
     var date = new Date(parseInt(value));
     res.json({
       unix:date.getTime(),
       utc:date.toUTCString()
+    })
+  }else{
+    res.json({
+      error:"Invalid date"
     })
   }
  
