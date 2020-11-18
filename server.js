@@ -29,37 +29,39 @@ app.get("/api/timestamp",(req,res)=>{
 // your first API endpoint... 
 app.get("/api/timestamp/:time",(req,res)=>{
   let value = req.params.time;
-  let regex1=/^\d{4}-\d{2}-\d{2}$/;
+ 
   let regex2=/^\d+$/;
   
  
- if(regex1.test(value)){
-    
-    let splittedArray=value.split("-");
-    
-    let year = parseInt(splittedArray[0]);
-    let month = parseInt(splittedArray[1]);
-    let day = parseInt(splittedArray[2]);
-    var date = new Date(year,month-1,day);
-
-   
-    res.json({
-      unix:date.getTime(),
-      utc:date.toUTCString()
-
-    })
-
-  }else if(regex2.test(value)){
+  if(regex2.test(value)){
     var date = new Date(parseInt(value));
     res.json({
       unix:date.getTime(),
       utc:date.toUTCString()
     })
-  }else{
-    res.json({
-      error:"Invalid date"
-    })
+  
   }
+  else{
+    
+    
+    var date = new Date(value);
+
+   if(date !="Invalid Date"){
+    res.json({
+      unix:date.getTime(),
+      utc:date.toUTCString()
+
+    })
+   }else{
+     res.json({
+       error:date
+     })
+   }
+   
+
+  }
+  
+ 
  
   
 });
